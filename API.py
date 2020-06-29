@@ -25,7 +25,7 @@ def home():
 
 @app.route('/register', methods = ['GET'])
 def register():
-	username = request.args.get("newusername")
+	username = request.headers.get("newusername")
 	if username is not None:
 		return login_manager.create_account(username)
 	else:
@@ -34,7 +34,7 @@ def register():
 
 @app.route('/deluser', methods = ['GET'])
 def deluser():
-	username = request.args.get("deluser")
+	username = request.headers.get("deluser")
 	if username is not None:
 		return login_manager.delete_account(username)
 	else:
@@ -44,8 +44,8 @@ def deluser():
 @app.before_request
 def before_request():
 	path = request.path
-	password = request.args.get("password")
-	username = request.args.get("username")
+	password = request.headers.get("password")
+	username = request.headers.get("username")
 
 	if username is not None and password is not None:
 		if not (login_manager.is_admin(username) and login_manager.validate_request(ADMIN_ENDPOINTS, path,
