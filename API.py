@@ -29,7 +29,7 @@ def register():
 	if username is not None:
 		return login_manager.create_account(username)
 	else:
-		return "<h1>Ensure header contains {username}</h1>"
+		return "<h1>Ensure header contains {newusername}</h1>"
 
 
 @app.route('/deluser', methods = ['GET'])

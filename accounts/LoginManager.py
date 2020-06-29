@@ -1,10 +1,12 @@
-import array
 import json, os
 import random
 import string
+from flask import redirect
 
 from passlib.context import CryptContext
 from pathlib import Path
+
+from API import REDIRECT_URL
 
 PASSWORD_VALUES = list(f'{string.ascii_letters} + {string.digits}')
 
@@ -68,9 +70,12 @@ class LoginManager:
 		return "<h1>Account username {" + username + "} already exists!</h1>"
 
 	def delete_account(self, username):
-		self.saved_accounts.pop(username)
-		self.save_json()
-		return "<h1>Account username {" + username + "} deleted.</h1>"
+		if self.is_admin(username):
+			return redirect(REDIRECT_URL + "/403")
+		else:
+			self.saved_accounts.pop(username)
+			self.save_json()
+			return "<h1>Account username {" + username + "} deleted.</h1>"
 
 	def is_admin(self, username):
 		return username == self.ADMIN_USERNAME
