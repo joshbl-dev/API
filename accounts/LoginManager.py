@@ -6,7 +6,7 @@ from flask import redirect
 from passlib.context import CryptContext
 from pathlib import Path
 
-from API import REDIRECT_URL
+import redirects
 
 PASSWORD_VALUES = list(f'{string.ascii_letters} + {string.digits}')
 
@@ -71,7 +71,7 @@ class LoginManager:
 
 	def delete_account(self, username):
 		if self.is_admin(username):
-			return redirect(REDIRECT_URL + "/403")
+			return redirects.rejected_perms()
 		else:
 			self.saved_accounts.pop(username)
 			self.save_json()

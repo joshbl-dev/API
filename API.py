@@ -3,10 +3,10 @@ import os
 from flask import Flask, redirect, request
 
 from accounts.LoginManager import LoginManager
+import redirects
 
 SECURE_ENDPOINTS = ["/startPC"]
 ADMIN_ENDPOINTS = ["/register", "/deluser"]
-REDIRECT_URL = "https://joshbl.dev"
 
 app = Flask(__name__)
 login_manager = LoginManager()
@@ -20,7 +20,7 @@ def start_pc():
 
 @app.route('/', methods = ['GET'])
 def home():
-	return redirect(REDIRECT_URL)
+	return redirect(redirects.REDIRECT_URL)
 
 
 @app.route('/register', methods = ['GET'])
@@ -51,9 +51,9 @@ def before_request():
 		if not (login_manager.is_admin(username) and login_manager.validate_request(ADMIN_ENDPOINTS, path,
 				login_manager.ADMIN_USERNAME, password)) and not login_manager.validate_request(SECURE_ENDPOINTS, path,
 				username, password):
-			return redirect(REDIRECT_URL + "/403")
+			return redirect(redirects.rejected_perms())
 	else:
-		return redirect(REDIRECT_URL + "/404")
+		return redirect(redirects.invalid_request())
 
 
 if __name__ == '__main__':
