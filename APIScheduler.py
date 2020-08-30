@@ -27,13 +27,11 @@ def send_quote_emails():
 
 
 def days_until_quote():
-    os.system("java -jar SchwartzBot.jar")
     print("Current day: " + datetime.datetime.now().__str__())
 
 
 def startup():
-    # schedule.every().monday.at("12:00").do(send_quote_emails)
-    schedule.every().minutes.do(send_quote_emails)
+    schedule.every().monday.at("12:00").do(send_quote_emails)
     schedule.every().day.at("12:00").do(days_until_quote)
     run_continuously()
 
