@@ -12,7 +12,6 @@ ADMIN_ENDPOINTS = ["/register", "/deluser"]
 app = Flask(__name__)
 login_manager = LoginManager()
 scheduler = Scheduler()
-scheduler.r
 
 
 @app.route('/startPC', methods=['GET'])
