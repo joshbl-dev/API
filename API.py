@@ -2,7 +2,6 @@ import os
 
 from flask import Flask, redirect, request
 
-from APIScheduler import run_task, send_quote_emails
 from accounts.LoginManager import LoginManager
 import redirects
 
@@ -51,13 +50,11 @@ def before_request():
     if username is not None and password is not None:
         if not (login_manager.is_admin(username) and login_manager.validate_request(ADMIN_ENDPOINTS, path,
                                                                                     login_manager.ADMIN_USERNAME,
-                                                                                    password)) and not login_manager.validate_request(
-            SECURE_ENDPOINTS, path, username, password):
+                                                                                    password)) and not login_manager.validate_request(SECURE_ENDPOINTS, path, username, password):
             return redirect(redirects.rejected_perms())
     else:
         return redirect(redirects.invalid_request())
 
 
 if __name__ == '__main__':
-    run_task(send_quote_emails)
     app.run(debug=True, port=80)
