@@ -2,7 +2,6 @@ import threading
 import time
 
 import schedule
-import os
 
 
 def run_continuously(interval=1):
@@ -21,16 +20,14 @@ def run_continuously(interval=1):
 
 
 def send_quote_emails():
-    os.system("java -jar SchwartzBot.jar")
+    # os.system("java -jar SchwartzBot.jar")
     print("Sending out motivation emails!")
 
 
-def schedule_tasks():
-    schedule.every().minute.do(send_quote_emails)
+def startup():
+    schedule.every().monday.at("12:00").do(send_quote_emails)
     run_continuously()
 
 
-class Scheduler:
-
-    def __new__(cls):
-        return super().__new__(cls)
+if __name__ == '__main__':
+    startup()

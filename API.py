@@ -2,7 +2,7 @@ import os
 
 from flask import Flask, redirect, request
 
-from Scheduler import schedule_tasks
+from APIScheduler import run_task, send_quote_emails
 from accounts.LoginManager import LoginManager
 import redirects
 
@@ -11,8 +11,6 @@ ADMIN_ENDPOINTS = ["/register", "/deluser"]
 
 app = Flask(__name__)
 login_manager = LoginManager()
-
-scheduler = schedule_tasks()
 
 
 @app.route('/startPC', methods=['GET'])
@@ -54,12 +52,12 @@ def before_request():
         if not (login_manager.is_admin(username) and login_manager.validate_request(ADMIN_ENDPOINTS, path,
                                                                                     login_manager.ADMIN_USERNAME,
                                                                                     password)) and not login_manager.validate_request(
-            SECURE_ENDPOINTS, path,
-            username, password):
+            SECURE_ENDPOINTS, path, username, password):
             return redirect(redirects.rejected_perms())
     else:
         return redirect(redirects.invalid_request())
 
 
 if __name__ == '__main__':
+    run_task(send_quote_emails)
     app.run(debug=True, port=80)
