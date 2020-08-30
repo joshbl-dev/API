@@ -1,5 +1,28 @@
+import threading
+import time
+
 import schedule
 import os
+
+
+def send_quote_emails():
+    os.system("java -jar SchwartzBot.jar")
+    print("Sending out motivation emails!")
+
+
+def run_continuously(interval=1):
+    cease_continuous_run = threading.Event()
+
+    class ScheduleThread(threading.Thread):
+        @classmethod
+        def run(cls):
+            while not cease_continuous_run.is_set():
+                schedule.run_pending()
+                time.sleep(interval)
+
+    continuous_thread = ScheduleThread()
+    continuous_thread.start()
+    return cease_continuous_run
 
 
 class Scheduler:
@@ -8,8 +31,5 @@ class Scheduler:
         return super().__new__(cls)
 
     def __init__(self):
-        schedule.every().monday.at("12:00").do(self.send_quote_emails())
-
-    def send_quote_emails(self):
-        os.system("java -jar SchwartzBot.jar")
-        print("Sending out motivation emails!")
+        schedule.every().minute.do(send_quote_emails())
+        run_continuously()
