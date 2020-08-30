@@ -5,7 +5,6 @@ import schedule
 import os
 
 
-
 def run_continuously(interval=1):
     cease_continuous_run = threading.Event()
 
@@ -21,15 +20,17 @@ def run_continuously(interval=1):
     return cease_continuous_run
 
 
+def send_quote_emails():
+    os.system("java -jar SchwartzBot.jar")
+    print("Sending out motivation emails!")
+
+
+def schedule_tasks():
+    schedule.every().minute.do(send_quote_emails)
+    run_continuously()
+
+
 class Scheduler:
 
     def __new__(cls):
         return super().__new__(cls)
-
-    def __init__(self):
-        schedule.every().minute.do(self.send_quote_emails)
-        run_continuously()
-
-    def send_quote_emails(self):
-        os.system("java -jar SchwartzBot.jar")
-        print("Sending out motivation emails!")

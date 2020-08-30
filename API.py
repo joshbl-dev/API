@@ -2,7 +2,7 @@ import os
 
 from flask import Flask, redirect, request
 
-from Scheduler import Scheduler
+from Scheduler import schedule_tasks
 from accounts.LoginManager import LoginManager
 import redirects
 
@@ -11,7 +11,8 @@ ADMIN_ENDPOINTS = ["/register", "/deluser"]
 
 app = Flask(__name__)
 login_manager = LoginManager()
-scheduler = Scheduler()
+
+scheduler = schedule_tasks()
 
 
 @app.route('/startPC', methods=['GET'])
